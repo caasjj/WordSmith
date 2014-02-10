@@ -40,18 +40,15 @@ Additional rules:
 a. Valid words are selected from an Open Source dictionary provided by 
    Letterpress (https://github.com/atebits/Words)
 b. Retraction of a selected letter is never permitted
-c. Players with insufficient self dignity who resort to downloading and
-   referencing the dictionary to defeat this simplified version of the game are
-   reminded of the full, anagrams permitted, version of the game.
-d. Players with sufficient ingenuity to download the dictionary and create an
-   anagram generator to help them in the play of the full version of the game are
-   saluted.
+c. Yes, cheating is easy in this version, but that's pretty lame.
+   The anagram version should be more difficult and require someone to at 
+   least take the time to write a few lines of code.
 
 Acknowledgments:
 ----------------
 The game server runs on Sinatra (http://www.sinatrarb.com).  The realtime data
 access runs on Firebase (https://www.firebase.com).  The client side runs on 
-- what else? - AngularJS framework (http://angularjs.org).  Original Letterpress 
+AngularJS framework (http://angularjs.org).  Original Letterpress 
 (https://github.com/atebits/Words) dictionary converted from text file to SQLite 
 database using a custom NodeJS app.  This was done using the SQLite API from 
 (https://github.com/mapbox/node-sqlite3/wiki/API).  Scrabble tile images 
