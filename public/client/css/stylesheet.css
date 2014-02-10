@@ -1,0 +1,32 @@
+body {
+	background-image: url('../../assets/img/old_map_2X.png')
+}
+
+img.scrabble-letter {
+	width: 50px;
+	height: 50px;
+}
+
+.centered-form{
+  margin-top: 20px;
+}
+
+.centered-form .panel{
+  background: rgba(255, 255, 255, 0.8);
+  box-shadow: rgba(10, 10, 10, 0.2) 10px 10px 10px;
+}
+
+.panel-default {
+  margin-top: 10px;
+}
+
+.panel-body {
+  /* background-image: url('../../assets/img/background1.jpg'); */
+  background-color: #C99B70;
+}
+
+.panel-title {
+  color: #C99B70;
+  font-family: inherit;
+  text-align: center;
+}
