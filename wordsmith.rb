@@ -55,7 +55,13 @@ end
 
 def createPlayer(name, fb)
   p name
-  fb[:firebase].push(fb[:players_uri], {:username => name, :letters => ""}).body["name"]
+  ref = fb[:firebase].push(fb[:players_uri], {:username => name, :letters => ""}).body["name"]
+  Player.destroy_all(:username => name)
+  Player.create({:username => name, :lastname => ref})
+end
+
+def getPlayerRef(username)
+  Player.find_by_username(username)[:lastname]
 end
 
 def getPlayer(id, fb)
@@ -210,7 +216,7 @@ end
 ###########################################################
 # Routes - Game Creation and Scoring
 ###########################################################
-post '/game/reset' do
+get '/game/reset' do
   puts 'CLEARING THE GAME'
   deleteAllPlayers(firebase)
   setCurrentWord("", firebase)
@@ -235,7 +241,9 @@ post '/players/:id/char/:char' do
   # chars = getPlayerLetters(params[:id], firebase)
   # chars << params[:char][0,1]
   p 'Player #{params[:id]} posted character #{params[:char]}'
-  appendCharToPlayerLetters(params[:id], params[:char], firebase)
+  id = getPlayerRef( params[:id] )
+  appendCharToPlayerLetters(id, params[:char], firebase)
+  'OK'
 end
 
 post '/players/:id/char' do

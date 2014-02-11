@@ -2,7 +2,7 @@
   <!-- <div class="word-display" ng-repeat="player in players track by $index"> -->
 
   <div class="word-display">
-    <h2>Current word</p>
+    <h2 ng-model="currentWord">Current word (max possible: {{currentWord.maxValue}})</p>
     <div class="current-word" ng-model="currentWord">
       <span class="word-display" ng-repeat="letter in currentWord.currentWord track by $index">
         <img ng-src="assets/img/{{letter}}.png" class="scrabble-letter">
@@ -21,8 +21,5 @@
       <input type="text" ng-model="text" name="text" placeholder="next letter" data-player="{{player}}">
       </input>
      </form>
-  </div>
-  <div class="max-display" ng-model="currentWord">
-    <P>Maximum possible value is: {{currentWord.maxValue}}</P>
   </div>
 </div>

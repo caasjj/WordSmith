@@ -1,5 +1,8 @@
 <ul>
-  <li><a href="/" class="index">Word Game</a></li>
-  <li><a href="/create" class="create">Words</a></li>
+  <li><a href="/game/reset" target="_safe">Clear</a></li>
+
+  <form method="POST" ng-submit="submit()" ng-controller="userAcctController">
+     <input type="text" name="text" ng-model="text" placeholder="new user">
+   </input>
+  <form>
 </ul>
-<button id="logoutButton">Logout</button>
