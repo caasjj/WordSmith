@@ -55,7 +55,7 @@ end
 
 def createPlayer(name, fb)
   p name
-  fb[:firebase].push(fb[:players_uri], {:username => name, :letters => "ABC"}).body["name"]
+  fb[:firebase].push(fb[:players_uri], {:username => name, :letters => ""}).body["name"]
 end
 
 def getPlayer(id, fb)
@@ -105,8 +105,9 @@ def setMaxValue(value, fb)
 end
 
 def updateMaxValueForCurrentWord(word, fb)
-  max = Dict.find_by_sql("SELECT MAX(points),id,points,word AS max,id,points,word from dicts WHERE word LIKE '#{word}%'")[0].points
-  max = max || 0
+  p ("SELECT MAX(points),id,points,word AS max,id,points,word from dicts WHERE word LIKE '#{word}%'").to_json
+  max = Dict.find_by_sql("SELECT MAX(points),id,points,word AS max,id,points,word from dicts WHERE word LIKE '#{word}%'")
+  max = max[0].points || 0
   setMaxValue(max, fb)
 end
 
@@ -207,8 +208,11 @@ end
 ###########################################################
 # Routes - Game Creation and Scoring
 ###########################################################
-post '/games' do
-  puts 'Creates a new game'
+post '/game/reset' do
+  puts 'CLEARING THE GAME'
+  deleteAllPlayers(firebase)
+  setCurrentWord("", firebase)
+  setMaxValue(0, firebase)
 end
 
 # Player creation interface
@@ -239,8 +243,8 @@ get '/word/:ref' do
 end
 
 get '/max/:ref' do
-  p "SELECT * from dicts WHERE word LIKE '#{params[:ref]}%'"
-  Dict.find_by_sql("SELECT MAX(points) AS max,id,points,word from dicts WHERE word LIKE '#{params[:ref]}%'").to_json
+  p "SELECT MAX(points) AS max,id,points,word from dicts WHERE word LIKE '#{params[:ref]}%';"
+  Dict.find_by_sql("SELECT MAX(points) AS max,id,points,word from dicts WHERE word LIKE '#{params[:ref]}%';").to_json
 end
 
 ## Scoring interface

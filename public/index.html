@@ -10,41 +10,14 @@
   <link href="client/css/stylesheet.css" rel="stylesheet">
 </head>
 <body>
+
   <h1>Word Game</h1>
+
   <div class="container" ng-view="">
   </div>
 
-  <script>
-  var wordsmith = angular.module('wordsmith', ['ngRoute','firebase']); 
-  wordsmith.config(
-    function($routeProvider, $locationProvider){
-      $locationProvider.html5Mode(true);
-      $routeProvider
-      .when('/', {
-        controller: 'wordController',
-        templateUrl: 'partials/word.html'
-      })
-    });
-
-  wordsmith.controller(
-  'wordController',
-  function($scope, $firebase) {
-    var playerRef = new Firebase("https://wordsmith.firebaseio.com/players");
-      // Automatically syncs everywhere in realtime
-      $scope.players = $firebase(playerRef);
-      
-      //$scope.players.$add({'username':'player', 'word':'none'});
-      //console.log( 'here', $scope.data.$child('player0'));
-      //v = $scope.data.$child('player0').$child('available').$value;
-      $scope.players.$on( 'loaded', function() {
-      console.log( arguments );
-    });
-
-   }); 
-  </script>
-  <!--
   <script src="client/js/app.js"></script>
   <script src="client/js/controllers.js"></script>
-  -->
+
 </body>
 </html>
