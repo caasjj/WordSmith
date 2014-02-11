@@ -1,5 +1,5 @@
 body {
-  background-image: url('../../assets/img/old_map_2X.png')
+  background-image: url('../../assets/img/ricepaper_v3_2X.png')
 }
 
 img.scrabble-letter {
@@ -7,11 +7,56 @@ img.scrabble-letter {
   height: 50px;
 }
 
+
 .player-letters {
   display: inline-block;
 }
 .centered-form{
   margin-top: 20px;
+}
+
+.word-input {
+  margin-left: 10px;
+
+}
+
+.word-display {
+  magin-left: 20px;
+}
+
+.word-display img:first {
+  margin-left: 10px;
+}
+
+.player-display {
+  padding: 5px;
+  margin: 40px;
+  background: rgba(201, 155, 112, 0.25);
+  box-shadow: rgba(10, 10, 10, 0.2) 10px 10px 10px;
+}
+
+.player-letters {
+  margin-left: 20px;
+}
+
+.max-value-display {
+  display: inline-block;
+  color: #C99B70;
+  padding: 20px;
+  background: rgba(201, 155, 112, 0.25);
+  box-shadow: rgba(10, 10, 10, 0.2) 10px 10px 10px;
+  margin-right: 50px;
+}
+
+.current-word {
+  padding: 5px;
+  margin: 40px;
+}
+
+.player-name {
+  margin: auto;
+  text-align: center;
+  color: #C99B70;
 }
 
 .centered-form .panel{
@@ -26,6 +71,7 @@ img.scrabble-letter {
 .main-title {
   margin: auto;
   text-align: center;
+  color: #C99B70;
 }
 
 .panel-body {
@@ -74,4 +120,14 @@ img.scrabble-letter {
 
 .navigation li a.selected {
   background-color: #C99B70;
+}
+
+.reset-button {
+  padding: 5px;
+  float: right;
+}
+
+.user-acct-input {
+  margin-top: 13px;
+  padding: 3px;
 }

@@ -2,7 +2,7 @@
   <!-- <div class="word-display" ng-repeat="player in players track by $index"> -->
 
   <div class="word-display">
-    <h2 ng-model="currentWord">Current word (max possible: {{currentWord.maxValue}})</p>
+    <h2 class="max-value-display" ng-model="currentWord">Max: {{currentWord.maxValue | number:0}}</h2>
     <div class="current-word" ng-model="currentWord">
       <span class="word-display" ng-repeat="letter in currentWord.currentWord track by $index">
         <img ng-src="assets/img/{{letter}}.png" class="scrabble-letter">
@@ -10,15 +10,14 @@
     </div>
   </div>
   <div class="player-display" ng-repeat="player in players">
-    <p>{{player.username}}
+    <p class="player-name">{{player.username}}</p>
     <div class="player-letters">
       <span class="word-display" ng-repeat="letter in player.letters track by $index">
         <img ng-src="assets/img/{{letter}}.png" class="scrabble-letter">
       </span>
     </div>
-    
      <form ng-submit="submit()" ng-controller="letterController">
-      <input type="text" ng-model="text" name="text" placeholder="next letter" data-player="{{player}}">
+      <input type="text" class="word-input" ng-model="text" name="text" placeholder="next letter" data-player="{{player}}">
       </input>
      </form>
   </div>

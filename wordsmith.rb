@@ -98,6 +98,7 @@ def appendCharToPlayerLetters(id, char, fb)
 end
 
 def deleteAllPlayers(fb)
+  p 'deleting all players'
   fb[:firebase].delete(fb[:players_uri])
 end
 
