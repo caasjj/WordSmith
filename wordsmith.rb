@@ -161,6 +161,7 @@ end
 # Routes - Login and account creation
 ###########################################################
 get '/', :auth => :player do
+    p 'Serving index.html'
     File.read(File.join('public', 'index.html'))
 end
 

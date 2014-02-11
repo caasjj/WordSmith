@@ -1,12 +1,15 @@
 body {
-	background-image: url('../../assets/img/old_map_2X.png')
+  background-image: url('../../assets/img/old_map_2X.png')
 }
 
 img.scrabble-letter {
-	width: 50px;
-	height: 50px;
+  width: 50px;
+  height: 50px;
 }
 
+.player-letters {
+  display: inline-block;
+}
 .centered-form{
   margin-top: 20px;
 }
@@ -18,6 +21,11 @@ img.scrabble-letter {
 
 .panel-default {
   margin-top: 10px;
+}
+
+.main-title {
+  margin: auto;
+  text-align: center;
 }
 
 .panel-body {
