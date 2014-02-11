@@ -1,6 +1,6 @@
 <ul>
-  <li><a href="/game/reset" target="_safe">Clear</a></li>
-
+<!--  <li><a href="/game/reset" target="_safe">Clear</a></li> -->
+  <li><a class="reset-button" ng-click="resetIt()" ng-controller="userAcctController">Clear</a></li>
   <form method="POST" ng-submit="submit()" ng-controller="userAcctController">
      <input type="text" name="text" ng-model="text" placeholder="new user">
    </input>

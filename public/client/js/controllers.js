@@ -47,4 +47,7 @@
        console.log('creating new user!', this.text);
        this.text = '';
      }
+      $scope.resetIt = function() {
+        $http.get('/game/reset');
+      }
   });
