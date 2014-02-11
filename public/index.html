@@ -21,13 +21,13 @@
       $locationProvider.html5Mode(true);
       $routeProvider
       .when('/', {
-        controller: 'playerController',
+        controller: 'wordController',
         templateUrl: 'partials/word.html'
       })
     });
 
   wordsmith.controller(
-  'playerController',
+  'wordController',
   function($scope, $firebase) {
     var playerRef = new Firebase("https://wordsmith.firebaseio.com/players");
       // Automatically syncs everywhere in realtime

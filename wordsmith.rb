@@ -37,7 +37,9 @@ players_uri = "#{base_uri}players/"
 
 firebase = { :firebase => Firebase.new(base_uri),
              :base_uri => 'https://wordsmith.firebaseio.com/',
-             :players_uri => "#{base_uri}players/"
+             :players_uri => "#{base_uri}players/",
+             :currentWord_uri => "#{base_uri}currentWord/",
+             :maxValue_uri => "#{base_uri}maxValue/",
             }
 
 # Read the playes from Firebase
@@ -61,20 +63,54 @@ def getPlayer(id, fb)
 end
 
 def getPlayerLetters(id, fb)
-  fb[:firebase].get("#{fb[:players_uri]}#{id}").body["letters"]
+  fb[:firebase].get("#{fb[:players_uri]}#{id}").body["letters"].to_s
 end
 
 def updatePlayerLetters(id, letters, fb)
-  updatedPlayer = getPlayer(id, fb)
-  updatedPlayer["letters"] = letters
-  fb[:firebase].update("#{fb[:players_uri]}#{id}", updatedPlayer).body
+  player = getPlayer(id, fb)
+  player["letters"] = letters
+  fb[:firebase].update("#{fb[:players_uri]}#{id}", player).body
+end
+
+def appendCharToPlayerLetters(id, char, fb)
+  letters = getPlayerLetters(id, fb)
+  letters << char[0,1]
+  updatePlayerLetters(id, letters, fb)
+  appendCharToCurrentWord(char, fb)
 end
 
 def deleteAllPlayers(fb)
   fb[:firebase].delete(fb[:players_uri])
 end
 
-deleteAllPlayers(firebase)
+def getCurrentWord(fb)
+  fb[:firebase].get(fb[:currentWord_uri]).body
+end
+
+def setCurrentWord(word, fb)
+  fb[:firebase].set(fb[:currentWord_uri], word)
+end
+
+def appendCharToCurrentWord(char, fb)
+  p "CurrentWord: #{getCurrentWord(fb)}"
+  word = getCurrentWord(fb)
+  word << char[0,1]
+  setCurrentWord( word, fb )
+  updateMaxValueForCurrentWord(word, fb)
+end
+
+def setMaxValue(value, fb)
+  p "Setting maxValue to #{value}"
+  fb[:firebase].set(fb[:maxValue_uri], value)
+end
+
+def updateMaxValueForCurrentWord(word, fb)
+  max = Dict.find_by_sql("SELECT MAX(points),id,points,word AS max,id,points,word from dicts WHERE word LIKE '#{word}%'")[0].points
+  max = max || 0
+  setMaxValue(max, fb)
+end
+
+#deleteAllPlayers(firebase)
 createCurrentWord('', firebase)
 createMaxValue(firebase)
 # updatePlayerWord(player1, 'Salut!', firebase)
@@ -190,9 +226,9 @@ get '/players/:id/char' do
 end
 
 post '/players/:id/char/:char' do
-  chars = getPlayerLetters(params[:id], firebase)
-  chars << params[:char][0,1]
-  updatePlayerLetters(params[:id], chars, firebase)
+  # chars = getPlayerLetters(params[:id], firebase)
+  # chars << params[:char][0,1]
+  appendCharToPlayerLetters(params[:id], params[:char], firebase)
 end
 
 
