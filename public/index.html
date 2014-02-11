@@ -1,17 +1,50 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" ng-app="wordsmith">
 <head>
-	<meta charset="UTF-8">
-	<title>Document</title>
-	<link href="client/css/stylesheet.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <title>Document</title>
+  <script src="lib/angular/angular.js"></script>
+  <script src="lib/angular/angular-route.js"></script>
+  <script src="lib/firebase/firebase.js"></script>
+  <script src="lib/angularfire/angularfire.js"></script>
+  <link href="client/css/stylesheet.css" rel="stylesheet">
 </head>
 <body>
-	<div class="container">
-	<img src="assets/img/H.png" class="scrabble-letter">
-	<img src="assets/img/E.png" class="scrabble-letter">
-	<img src="assets/img/L.png" class="scrabble-letter">
-	<img src="assets/img/L.png" class="scrabble-letter">
-	<img src="assets/img/O.png" class="scrabble-letter">
-	</div>
+  <h1>Word Game</h1>
+  <div class="container" ng-view="">
+  </div>
+
+  <script>
+  var wordsmith = angular.module('wordsmith', ['ngRoute','firebase']); 
+  wordsmith.config(
+    function($routeProvider, $locationProvider){
+      $locationProvider.html5Mode(true);
+      $routeProvider
+      .when('/', {
+        controller: 'playerController',
+        templateUrl: 'partials/word.html'
+      })
+    });
+
+  wordsmith.controller(
+  'playerController',
+  function($scope, $firebase) {
+    var playerRef = new Firebase("https://wordsmith.firebaseio.com/players");
+      // Automatically syncs everywhere in realtime
+      $scope.players = $firebase(playerRef);
+      
+      //$scope.players.$add({'username':'player', 'word':'none'});
+      //console.log( 'here', $scope.data.$child('player0'));
+      //v = $scope.data.$child('player0').$child('available').$value;
+      $scope.players.$on( 'loaded', function() {
+      console.log( arguments );
+    });
+
+   }); 
+  </script>
+  <!--
+  <script src="client/js/app.js"></script>
+  <script src="client/js/controllers.js"></script>
+  -->
 </body>
 </html>

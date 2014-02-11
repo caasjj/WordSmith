@@ -1,0 +1,8 @@
+<div>
+  <!-- <div class="word-display" ng-repeat="player in players track by $index"> -->
+    <div class="word-display" ng-repeat="player in players">
+      <span class="word-display" ng-repeat="letter in player.letters track by $index">
+        <img ng-src="assets/img/{{letter}}.png" class="scrabble-letter">
+      </span>
+    </div>
+</div>

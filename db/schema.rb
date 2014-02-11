@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140210070020) do
+ActiveRecord::Schema.define(version: 20140211050321) do
 
-  create_table "dict", force: true do |t|
+  create_table "dicts", force: true do |t|
     t.string "word"
     t.string "points"
   end
@@ -33,6 +33,7 @@ ActiveRecord::Schema.define(version: 20140210070020) do
     t.string   "password_hash"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "fb_id"
   end
 
   create_table "scores", force: true do |t|

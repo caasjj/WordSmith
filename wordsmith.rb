@@ -31,10 +31,56 @@ end
 # turn off root element rendering in JSON
 ActiveRecord::Base.include_root_in_json = false
 
+# Here, we will create the rooms 
 base_uri = 'https://wordsmith.firebaseio.com/'
-firebase = Firebase.new(base_uri)
-# response = firebase.push("todos", { :name => 'Pick the milk', :priority => 1 })
+players_uri = "#{base_uri}players/"
 
+firebase = { :firebase => Firebase.new(base_uri),
+             :base_uri => 'https://wordsmith.firebaseio.com/',
+             :players_uri => "#{base_uri}players/"
+            }
+
+# Read the playes from Firebase
+# players = Firebase.get(players_uri)
+# p players
+def createCurrentWord(word, fb)
+  fb[:firebase].set('currentWord', word)
+end
+
+def createMaxValue(fb)
+  fb[:firebase].set('maxValue', 0)
+end
+
+def createPlayer(name, fb)
+  p name
+  fb[:firebase].push(fb[:players_uri], {:username => name, :letters => "ABC"}).body["name"]
+end
+
+def getPlayer(id, fb)
+  fb[:firebase].get("#{fb[:players_uri]}#{id}").body
+end
+
+def getPlayerLetters(id, fb)
+  fb[:firebase].get("#{fb[:players_uri]}#{id}").body["letters"]
+end
+
+def updatePlayerLetters(id, letters, fb)
+  updatedPlayer = getPlayer(id, fb)
+  updatedPlayer["letters"] = letters
+  fb[:firebase].update("#{fb[:players_uri]}#{id}", updatedPlayer).body
+end
+
+def deleteAllPlayers(fb)
+  fb[:firebase].delete(fb[:players_uri])
+end
+
+deleteAllPlayers(firebase)
+createCurrentWord('', firebase)
+createMaxValue(firebase)
+# updatePlayerWord(player1, 'Salut!', firebase)
+# updatePlayerWord(player2, 'Got you!', firebase)
+# p "Player 1's word is: #{getPlayerWord(player1, firebase)}"
+# p getPlayerWord(player2, firebase)
 ###########################################################
 # Session
 ###########################################################
@@ -82,7 +128,6 @@ get '/', :auth => :player do
 end
 
 get '/login' do
- # erb :login
   File.read(File.join('public/html', 'login.html'))
 end
 
@@ -115,6 +160,7 @@ post '/players' do
   firstname = params[:firstname]
   lastname  = params[:lastname]
   email     = params[:email]
+  fb_id     = params[:fb_id]
   salt = Digest::SHA1.hexdigest( Random.rand( 10**10 ).to_s )
   password_hash = Digest::SHA1.hexdigest(params[:password]+ salt)[0,63]
   Player.create(username: username, password_hash: password_hash, salt: salt, firstname: firstname, lastname: lastname, email: email)
@@ -129,18 +175,39 @@ post '/games' do
   puts 'Creates a new game'
 end
 
+# Player creation interface
+post '/players/:username' do
+  createPlayer(params[:username], firebase)
+end
+
 post '/games/:game_id' do
   puts 'Player joins a game with game_id ', params[:game_id]
 end
 
-post '/games/:game_id/challenge' do
-  puts 'Player challenged with type ', params[:challenge_type]
+# Player character interface
+get '/players/:id/char' do
+  getPlayerLetters(params[:id], firebase)
 end
 
-get '/word' do
-  puts 'Look up word in Dictionary and get value'
+post '/players/:id/char/:char' do
+  chars = getPlayerLetters(params[:id], firebase)
+  chars << params[:char][0,1]
+  updatePlayerLetters(params[:id], chars, firebase)
 end
 
+
+## Dictionary database interface
+get '/word/:ref' do
+  word = Dict.find_by_word(params[:ref])
+  word.to_json
+end
+
+get '/max/:ref' do
+  p "SELECT * from dicts WHERE word LIKE '#{params[:ref]}%'"
+  Dict.find_by_sql("SELECT MAX(points) AS max,id,points,word from dicts WHERE word LIKE '#{params[:ref]}%'").to_json
+end
+
+## Scoring interface
 get '/games/:game_id/scores' do
   puts 'Look up players and return all scores'
 end
