@@ -61,21 +61,32 @@ def createPlayer(name, fb)
 end
 
 def getPlayerRef(username)
-  Player.find_by_username(username)[:lastname]
+  player = Player.find_by_username(username)
+  player[:lastname] unless !player
 end
 
 def getPlayer(id, fb)
-  fb[:firebase].get("#{fb[:players_uri]}#{id}").body
+  player = fb[:firebase].get("#{fb[:players_uri]}#{id}")
+  player.body unless !player
 end
 
 def getPlayerLetters(id, fb)
-  fb[:firebase].get("#{fb[:players_uri]}#{id}").body["letters"].to_s
+  p id
+  player = getPlayer(id,fb)
+  if (player != nil)
+    player["letters"].to_s
+  else
+    nil
+  end
 end
 
 def updatePlayerLetters(id, letters, fb)
+  p id
   player = getPlayer(id, fb)
-  player["letters"] = letters
-  fb[:firebase].update("#{fb[:players_uri]}#{id}", player).body
+  if player
+    player["letters"] = letters
+    fb[:firebase].update("#{fb[:players_uri]}#{id}", player).body
+  end
 end
 
 def appendCharToPlayerLetters(id, char, fb)
