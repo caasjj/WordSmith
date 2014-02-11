@@ -17,9 +17,10 @@
       </span>
     </div>
     
-     <input type="text" placeholder="next letter">
-
-    </input>
+     <form ng-submit="submit()" ng-controller="letterController">
+      <input type="text" ng-model="text" name="text" placeholder="next letter" data-player="{{player}}">
+      </input>
+     </form>
   </div>
   <div class="max-display" ng-model="currentWord">
     <P>Maximum possible value is: {{currentWord.maxValue}}</P>

@@ -14,3 +14,15 @@
         console.log( arguments[0] );
       });
    }); 
+
+ wordsmith.controller(
+  'letterController',
+  function($scope, $http) {
+    $scope.submit = function() {
+      console.log('Letter submitted', this.text);
+      console.log( $scope.player );
+      console.log( $scope.player.id )
+      $http.post('/players/-JFXH08rzxnMwWkUoKSJ/char/' + this.text );
+      this.text = "";
+    }
+  });

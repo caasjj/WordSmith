@@ -73,10 +73,11 @@ def updatePlayerLetters(id, letters, fb)
 end
 
 def appendCharToPlayerLetters(id, char, fb)
+  p "appending character #{char} to user id #{id}"
   letters = getPlayerLetters(id, fb)
-  letters << char[0,1]
+  letters << char[0,1] unless !char
   updatePlayerLetters(id, letters, fb)
-  appendCharToCurrentWord(char, fb)
+  appendCharToCurrentWord(char, fb) unless !char
 end
 
 def deleteAllPlayers(fb)
@@ -233,6 +234,14 @@ end
 post '/players/:id/char/:char' do
   # chars = getPlayerLetters(params[:id], firebase)
   # chars << params[:char][0,1]
+  p 'Player #{params[:id]} posted character #{params[:char]}'
+  appendCharToPlayerLetters(params[:id], params[:char], firebase)
+end
+
+post '/players/:id/char' do
+  # chars = getPlayerLetters(params[:id], firebase)
+  # chars << params[:char][0,1]
+  p "Player #{params[:id]} posted character #{params[:char]}"
   appendCharToPlayerLetters(params[:id], params[:char], firebase)
 end
 
